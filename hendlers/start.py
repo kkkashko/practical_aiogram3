@@ -39,6 +39,7 @@ def register_start_handlers(dp: Dispatcher):
             "Используй кнопки внизу для навигации!"
         )
 
+
     @dp.message(F.text)
     async def handle_other_button(message: Message):
 
