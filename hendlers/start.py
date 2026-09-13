@@ -38,17 +38,3 @@ def register_start_handlers(dp: Dispatcher):
             "3. /help - справочный материал"
             "Используй кнопки внизу для навигации!"
         )
-
-
-    @dp.message(F.text)
-    async def handle_other_button(message: Message):
-
-        if "привет" in message.text.lower():
-            await message.answer("Снова привет! Я уже здесь!\nЧем могу быть полезен?")
-        else:
-            await message.answer("Я не понял твою команду.\nИспользуй стандартные команды или меню!...")
-
-
-        
-    
-

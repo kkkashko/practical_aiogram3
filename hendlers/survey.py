@@ -67,7 +67,7 @@ def register_survey_handlerds(dp: Dispatcher): #? регистрация обр�
         data = await state.get_data() #? Получение всех данных
 
         result_text = (
-            "Опрос пройден!\n",
+            "Опрос пройден!\n"
             f"Имя: {data.get('name')}\n"
             f"Возраст: {data.get('age')}\n"
             f"Город: {data.get('city')}\n"
