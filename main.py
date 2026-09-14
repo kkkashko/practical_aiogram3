@@ -7,6 +7,8 @@ from aiogram.types import Message, FSInputFile #? Для работы с соо�
 
 from config import BotConfig
 from hendlers import register_all_handlers
+from middlewares.logging_middleware import LoggingMiddleWare
+from middlewares.auth import AdminMiddleware
 
 
 class TelegramBot:
@@ -21,9 +23,17 @@ class TelegramBot:
 
         self.dp = Dispatcher()
 
+        self._setup_middlewares()
+
         register_all_handlers(self.dp)
 
         logging.info("бот инициализирован...")
+
+    def _setup_middlewares(self): #? Подгрузка мидлваров в диспетчере
+
+        self.dp.update.outer_middleware(LoggingMiddleWare())
+
+        #* self.dp.update.outer_middleware(AdminMiddleware)
 
     async def start(self):
 
