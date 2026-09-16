@@ -9,6 +9,7 @@ from config import BotConfig
 from hendlers import register_all_handlers
 from middlewares.logging_middleware import LoggingMiddleWare
 from middlewares.auth import AdminMiddleware
+from database.db import Database
 
 
 class TelegramBot:
@@ -37,8 +38,10 @@ class TelegramBot:
 
     async def start(self):
 
-        bot_info = await self.bot.me()
+        await Database.init()
 
+        bot_info = await self.bot.me()
+        
         print(f"Бот запущен!\nИмя бота: {bot_info.first_name}\nUsername: {bot_info.username}\nID: {bot_info.id}")
 
         await self.dp.start_polling(self.bot, skip_updates=True)
