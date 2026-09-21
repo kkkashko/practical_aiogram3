@@ -67,3 +67,5 @@ def register_inline_handlers(dp: Dispatcher):
 
             await callback.message.delete()
             await callback.message.answer("Меню закрыто...", reply_markup=ReplyKeyboards.main_menu())
+
+

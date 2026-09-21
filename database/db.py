@@ -72,3 +72,24 @@ class Database:
             rows  = await cursor.fetchall()
 
             return rows
+
+    @staticmethod
+    async def count_all_surveys(): #? Сколько всего опросов в бд 
+        async with sq.connect(DB_PATH) as db:
+            cursor = await db.execute("SELECT COUNT(*) FROM surveys")
+            result = await cursor.fetchone()
+            return result[0]
+
+    @staticmethod
+    async def count_users():
+        async with sq.connect(DB_PATH) as db:
+            cursor = await db.execute("SELECT COUNT(DISTINCT user_id) FROM surveys")
+            result = await cursor.fetchone()
+            return result[0]
+
+    @staticmethod
+    async def count_surveys_user(user_id: int):
+        async with sq.connect(DB_PATH) as db:
+            cursor = await db.execute("SELECT COUNT(*) FROM surveys WHERE user_id = ?", (user_id,))
+            result = await cursor.fetchone()
+            return result[0]
