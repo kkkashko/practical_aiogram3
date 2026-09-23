@@ -16,21 +16,31 @@ class LoggingMiddleWare(BaseMiddleware): #? Класс для работы с м
         data: Dict[str, Any],
     ) -> Any:
 
-        user = None 
-        if isinstance(event, Message):
-            user = event.from_user #? Передача юзера
-        elif isinstance(event, CallbackQuery): 
-            user = event.from_user #? Передача юзера
+        user = data.get("event_from_user")
+        user_info = f"{user.id} @{user.username}"
 
-        user_info = f"{user.id} (@{user.username})" if user else "Неизвестный пользователь"
-        logger.info(f"Входящее сообытие от {user_info}")
+        if isinstance(event, Message): #? Определяем тип ошибки
+            event_type = "Сообщение"
+            content = event.text or "<без текста>"
+        elif isinstance(event, CallbackQuery):
+            event_type = "callback"
+            content = event.data
+        else:
+            event_type = "другое"
+            content = "-"
+
+        logger.info(f"[{event_type}] {user_info}: {content}")
 
         start = time.time()
 
-        result = await handler(event, data)
+        try:
+            result = await handler(event, data)
+            el = time.time() - start
 
-        time_result = time.time() - start
-        logger.info(f"Обработано за {time_result:.2f} сек")
+            logger.info(f"Обработано за: {el:.3f} сек.")
 
-        return result
-
+            return result
+        except Exception as er:
+            el = time.time() - start
+            logger.error(f"Ошибка за {el: .3f} сек: {er}")
+            raise

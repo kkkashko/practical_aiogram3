@@ -7,8 +7,11 @@ from aiogram.types import Message, FSInputFile #? Для работы с соо�
 
 from config import BotConfig
 from hendlers import register_all_handlers
+
 from middlewares.logging_middleware import LoggingMiddleWare
 from middlewares.auth import AdminMiddleware
+from middlewares.error_midleware import ErrorsMidleware
+
 from database.db import Database
 
 
@@ -33,6 +36,7 @@ class TelegramBot:
     def _setup_middlewares(self): #? Подгрузка мидлваров в диспетчере
 
         self.dp.update.outer_middleware(LoggingMiddleWare())
+        self.dp.update.outer_middleware(ErrorsMidleware(1034798621))
 
         #* self.dp.update.outer_middleware(AdminMiddleware)
 

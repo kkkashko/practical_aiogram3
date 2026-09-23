@@ -23,6 +23,10 @@ def register_start_handlers(dp: Dispatcher):
             reply_markup=keyboard
         )
 
+    @dp.message(Command("crash"))
+    async def cmd_crash(message: Message):
+        result = 1 / 0
+        await message.answer(str(result))
     
     @dp.message(F.text == "Старт")
     async def handle_start_button(message: Message):
